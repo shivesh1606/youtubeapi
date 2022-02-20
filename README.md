@@ -1,5 +1,5 @@
 # mysite
-> Was able to just integrate the Api and create a search option for fetching data from the Api and displaying it to the page. The front end doesn't looks good and still connecting the site to azax was left so no auto refresh feature
+> Was able to just integrate the Api and create a search option for fetching data from the Api and displaying it to the page. The front end doesn't looks good and still connecting the site to azax was left so no auto refresh feature. And was also unable to complete hosting on pythonanywhere.(Time issues)
 ## Requirements  (Prerequisites)
 Tools and packages required to successfully install this project.
 For example:
