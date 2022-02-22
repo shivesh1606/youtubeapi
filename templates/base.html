@@ -66,55 +66,40 @@
         {{ msg }}
     </p>
     {% endif %}
-
-    <form action="{% url 'Api:search' %}" method="POST">
+    <div class="alert alert-success" role="alert">
+        <h4 class="alert-heading">Api Search!</h4>
+        <p>This Website searches for default keyword 'music' and displays the content. Intially only 9 vedios willbe there but the page make GET requests after 2 min. The vedios are arranged according to accessending order of 'publishedAt' value </p>
+        <hr>
+        <p class="mb-0">When There will be 100 vedio of the keyword 'music' the server will stop fetching data.</p>
+      </div>
+    <form action="{% url 'Api:search' %}" method="POST" style="display:none">
         {% csrf_token %}
         <div class="mb-3">
             <label for="exampleInputEmail1" class="form-label">Search For</label>
-            <input type="keyword" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+            <input type="keyword" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+                default='music'>
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 
 
 
-    
+
     <div class="container">
-        {% for r in vedio %}
-        <div class="row">
-            <div class="col-md-6 ">
-                <div class="card">
-                    <div class="card-image">
-                        <div class="embed-responsive embed-responsive-16by9">
-                            <iframe width="280" height="157" src="{{r.link}}"
-                                frameborder="0" allowfullscreen></iframe>
-                            <div class="content">
-                                {% comment %} <h1>{{r.title}}</h1> {% endcomment %}
-                            </div>
-                            <!--end div class content-->
-                        </div>
-                        <!--End Div embed-responsive-->
+        {% comment %} {% for r in vedio %} {% endcomment %}
+        <div class="row" id="display">
 
-                    </div>
-                    <!-- card image -->
-
-                    <div class="card-content">
-                        <span class="display-4">{{r.title}}</span>
-                        <p class="ard-title">{{r.description}}</p>
-
-                    </div>
-                    <!-- card content -->
-
-                </div>
-            </div>
         </div>
-        {% endfor %}
+        {% comment %} {% endfor %} {% endcomment %}
 
 
         <!--end row-->
 
     </div>
     <!--end container-->
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"
+        integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"
         integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB"
         crossorigin="anonymous"></script>
@@ -134,5 +119,73 @@
         });
     </script>
 </body>
+<script>
+
+console.log('sdfsdfsdfdsf');
+            var a = document.getElementById('exampleInputEmail1').value;
+            if (a == '')
+                a = 'music'
+            $.ajax({
+                type: 'GET',
+                url: "{% url 'Api:getV' key='music' %}",
+                //`/Api/getVedios/${a}/`,
+                success: function (response) {
+                    console.log(response);
+                    $("#display").empty();
+                    
+
+                    for (var key in response.messages) {
+                        var temp;
+                        temp = "<div class='col-md-6'>"+"<div class='card-image'>"+"<div class='embed-responsive embed-responsive-16by9'>"+`<iframe width="280" height="157" src="${response.messages[key].link}" frameborder="0" allowfullscreen></iframe>`+"</div></div><div class='card-content'>"+`<span class="display-4">${response.messages[key].title}</span><p class="ard-title">${response.messages[key].description}</p>`+"</div></div></div>";
+                        count++;
+                        console.log($("#display").childElementCount)
+                        $("#display").append(temp);
+                    }
+                    
+                },
+                error: function (response) {
+                    alert('An error occured')
+                }
+                
+            });
+    $(document).ready(function () {
+        count = document.getElementById('display').childElementCount;
+        if (count<=100)
+        {
+            document.getElementById('display').clearChildren
+            setInterval(function () {
+            console.log('sdfsdfsdfdsf');
+            var a = document.getElementById('exampleInputEmail1').value;
+            if (a == '')
+                a = 'music'
+            $.ajax({
+                type: 'GET',
+                url: "{% url 'Api:getV' key='music' %}",
+                //`/Api/getVedios/${a}/`,
+                success: function (response) {
+                    console.log(response);
+                    $("#display").empty();
+                    count = 0;
+
+                    for (var key in response.messages) {
+                        var temp;
+                        temp = "<div class='col-md-6'>"+"<div class='card-image'>"+"<div class='embed-responsive embed-responsive-16by9'>"+`<iframe width="280" height="157" src="${response.messages[key].link}" frameborder="0" allowfullscreen></iframe>`+"</div></div><div class='card-content'>"+`<span class="display-4">${response.messages[key].title}</span><p class="ard-title">${response.messages[key].description}</p>`+"</div></div></div>";
+                        count++;
+                        console.log($("#display").childElementCount)
+                        $("#display").append(temp);
+                    }
+                    
+                },
+                error: function (response) {
+                    alert('An error occured')
+                }
+                
+            });
+            
+        }, 200000);
+        }
+        
+    })
+</script>
 
 </html>
