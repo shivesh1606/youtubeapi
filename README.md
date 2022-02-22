@@ -1,5 +1,5 @@
 # mysite
-> Was able to just integrate the Api and create a search option for fetching data from the Api and displaying it to the page. The front end doesn't looks good and still connecting the site to azax was left so no auto refresh feature. And was also unable to complete hosting on pythonanywhere.(Time issues)
+> The Site fetches data using azax and displays the content to front end ordered by the uploadation date. The front end doesn't looks good. The Site may not work after some time that implies i have exsauted my Youtube Api quota. I tried to create a basic demo so there are still some bugs.
 ## Requirements  (Prerequisites)
 Tools and packages required to successfully install this project.
 For example:
